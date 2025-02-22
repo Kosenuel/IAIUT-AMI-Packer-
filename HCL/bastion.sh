@@ -15,7 +15,7 @@ sudo echo "export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/t
 source ~/.bash_profile
 
 # clone the Ansible repo
-git clone https://github.com/Kosenuel/terraform-cloud.git #you can change it to your own ansible repo if you wish
+git clone https://github.com/Kosenuel/IAIUT-Ansible.git #you can change it to your own ansible repo if you wish
 
 
 # install botocore, ansible and awscli
