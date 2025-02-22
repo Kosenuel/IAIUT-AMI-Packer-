@@ -22,3 +22,8 @@ variable "source_ami_ubuntu" {
   type    = string
   default = "ami-091f18e98bc129c4e" # Bro, remember to replace with the latest Ubuntu AMI ID
 }
+
+# variable "bastion_public_key" {
+#   type    = string
+#   default = "testing-this is a default value, the value would be in the variables.pkrvar.hcl file"
+# }

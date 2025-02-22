@@ -23,4 +23,5 @@ build {
   provisioner "shell" {
     script = "web.sh"
   }
+
 }

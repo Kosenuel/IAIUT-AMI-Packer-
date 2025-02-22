@@ -1,8 +1,8 @@
 # Packer HCL Configuration
 # Create a local variable to generate a timestamp for unique AMI naming
-# locals {
-#   timestamp = regex_replace(timestamp(), "[- TZ:]", "") # Remove special characters from the timestamp
-# }
+locals {
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "") # Remove special characters from the timestamp
+}
 
 # Define the Amazon EBS builder configuration
 source "amazon-ebs" "terraform-nginx-prj-19" {
@@ -25,7 +25,7 @@ source "amazon-ebs" "terraform-nginx-prj-19" {
 build {
   sources = ["source.amazon-ebs.terraform-nginx-prj-19"] # Use the defined source block
 
-  # Run a shell script to provision the instance
+  # Provision the instance
   provisioner "shell" {
     script = "nginx.sh" # Path to the shell script for installing and configuring Nginx
   }

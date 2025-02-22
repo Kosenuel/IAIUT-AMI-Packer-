@@ -22,7 +22,7 @@ This project automates the creation of custom AWS AMIs using Packer. It includes
 1. **AWS Account**: With IAM credentials (Access Key + Secret Key).
 2. **Packer**: [Install Packer](https://developer.hashicorp.com/packer/downloads).
 3. **AWS CLI**: [Install and configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
-4. **SSH Key Pair**: Create one in your AWS region (e.g., `my-keypair.pem`).
+4. **SSH Key Pair**: Create one in your AWS region (e.g., `my-keypair.pem`) or leave packer to use default.
 
 ---
 
@@ -90,6 +90,20 @@ packer init .
 
 # Build All AMIs at once
 packer build -var-file=variables.pkrvar.hcl .
+
+# In our case, when you run this command, monitor and make sure that it's the bastion image that gets created first as the remaining images would need to populate their `authorized_keys` file with the public key of this bastion image/host.
+
+# OR BETTER STILL RUN:
+packer build bastion.pkr.hcl #Uncomment all the variables stuff that was commented.
+
+# After it has ran successfully, you should notice a new file in the output/ directory called "Ansible_key.pub", then run this on your cli:
+export BASTION_PUBLIC_KEY=$(cat output/Ansible_key.pub)
+# or
+BASTION_PUBLIC_KEY=$(cat output/Ansible_key.pub)  
+# If this process doesn't work with powershell, use gitbash to continue the process.
+# This would publish the public key for the remaining images to implement them when building.
+
+# Then you can build the remaining images (I normally would cut the bastion file into another dir, then uncomment the `locals{timestamp ...}` block in `nginx.pkr.hcl` and run the packer command (stated above) for building all images at once)
 
 # Build WordPress AMI
 packer build web.pkr.hcl -var-file=variables.pkrvar.hcl

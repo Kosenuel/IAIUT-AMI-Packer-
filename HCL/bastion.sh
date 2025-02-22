@@ -1,4 +1,15 @@
 #!/bin/bash
+# Create the .ssh directory and set proper permissions
+mkdir -p /home/ec2-user/.ssh
+chmod 700 /home/ec2-user/.ssh
+
+# Generate the SSH key pair if it doesn't already exist
+if [ ! -f /home/ec2-user/.ssh/Ansible_key ]; then
+    ssh-keygen -t rsa -b 4096 -f /home/ec2-user/.ssh/Ansible_key -N ""
+fi
+# export the ansible public key so that other images can add it to their authorized_keys file
+export BASTION_PUBLIC_KEY=$(cat /home/ec2-user/.ssh/Ansible_key.pub)
+
 sudo subscription-manager config --rhsm.manage_repos=0 || true
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 sudo yum install -y dnf-utils http://rpms.remirepo.net/enterprise/remi-release-9.rpm 
@@ -35,4 +46,5 @@ ansible-galaxy collection install amazon.aws
 ansible-galaxy collection install community.general
 ansible-galaxy collection install community.mysql
 ansible-galaxy collection install community.postgresql
+echo "the ansible public key is $BASTION_PUBLIC_KEY"
 

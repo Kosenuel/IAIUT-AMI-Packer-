@@ -24,4 +24,5 @@ build {
   provisioner "shell" {
     script = "ubuntu.sh"
   }
+
 }

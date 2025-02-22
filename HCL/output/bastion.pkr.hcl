@@ -8,10 +8,24 @@ packer {
   }
 }
 # Define a variable for the AWS region with a default value
-# variable "region" {
-#   type    = string
-#   default = "eu-west-2" # Default to London region
-# }
+variable "region" {
+  type    = string
+  default = "eu-west-2" # Default to London region
+}
+
+
+variable "tags" {
+  type = map(string)
+  default = {
+    Environment = "dev"
+    Owner       = "DevOps Team"
+  }
+}
+
+variable "source_ami" {
+  type    = string
+  default = "ami-0f9535ac605dc21d5" # Bro, remember to replace with the latest RHEL AMI ID
+}
 
 
 # Create a local variable to generate a timestamp for unique AMI naming
@@ -44,4 +58,16 @@ build {
   provisioner "shell" {
     script = "bastion.sh" # Path to the shell script for setting up the bastion host
   }
+
+  # Fetch the public key from the instance
+  provisioner "file" {
+  source      = "/home/ec2-user/.ssh/Ansible_key.pub"
+  destination = "output/Ansible_key.pub"
+  direction   = "download"
+}
+  
+  # Run the schell script to export public key to the variable file
+  # provisioner "shell" {
+  #   script = "gen_pub_key_var.sh"
+  # }
 }
