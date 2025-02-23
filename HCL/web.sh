@@ -3,7 +3,7 @@
 # Installing necessary packages
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 sudo yum install -y dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
-sudo yum install -y mysql wget vim telnet htop git python3 net-tools 
+sudo yum install -y mysql wget vim telnet htop git python3 python3-pip net-tools 
 sudo systemctl start chronyd
 sudo systemctl enable chronyd
 sudo yum module reset php -y
@@ -18,10 +18,10 @@ sudo setsebool -P httpd_use_nfs=1
 # installing efs-utils
 sudo git clone https://github.com/aws/efs-utils /efs-utils/
 cd /efs-utils
-sudo yum install -y make
-sudo yum install -y rpm-build
+sudo yum install -y nfs-utils stunnel make rpm-build cargo openssl-devel rust wget policycoreutils-python-utils
 sudo make rpm
 sudo yum install -y  ./build/amazon-efs-utils*rpm
+# sudo rpm -i -v /tmp/efs-utils/build/amazon-efs-utils*rpm
 
 #installing java 11
 sudo yum install -y java-11-openjdk-devel
