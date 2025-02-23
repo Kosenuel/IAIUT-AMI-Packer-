@@ -13,7 +13,7 @@ export BASTION_PUBLIC_KEY=$(cat /home/ec2-user/.ssh/Ansible_key.pub)
 sudo subscription-manager config --rhsm.manage_repos=0 || true
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 sudo yum install -y dnf-utils http://rpms.remirepo.net/enterprise/remi-release-9.rpm 
-sudo yum install -y mysql-server wget vim telnet htop git python3 net-tools zip
+sudo yum install -y mysql-server wget vim telnet htop git python3 python3-pip net-tools zip
 sudo systemctl start chronyd
 sudo systemctl enable chronyd
 
