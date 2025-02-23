@@ -84,26 +84,38 @@ Replace placeholder AMI IDs (e.g., `ami-0123456789abcdef0`) in the HCL files wit
 
 ## Building AMIs
 ### Build All AMIs
+In our case this is how we built the ami's using packer:
+
+- First, we cd into the `bastion-image` folder and run:
+```bash
+packer build bastion.pkr.hcl
+```
+after we have built this image successfully, we would notice that The file `output/Ansible_key.pub` has a new value, this is gotten from the ssh-key pair generation that occured when building the bastion, and this public key is to be applied to the `variable.pkvar.hcl` file by running:
+
+```bash
+cd ../ # This is to ensure that you are in the `HCL` directory.
+
+./apply_pub_key_2_var.sh
+
+cat variables.pkrvar.hcl # to view and verify that the content was actually modified
+```
+That script would help you automatically apply the public key just generated.
+Now you can continue with the process by building other images. We can achive this by running:
+
+```bash
+# Now build all images
+packer build -var-file=variables.pkvar.hcl .
+
+```
+
+Other methods of Using Packer includes but are not limited to:
+
 ```bash
 # Initialize Packer plugins (first time only)
 packer init .
 
 # Build All AMIs at once
 packer build -var-file=variables.pkrvar.hcl .
-
-# In our case, when you run this command, monitor and make sure that it's the bastion image that gets created first as the remaining images would need to populate their `authorized_keys` file with the public key of this bastion image/host.
-
-# OR BETTER STILL RUN:
-packer build bastion.pkr.hcl #Uncomment all the variables stuff that was commented.
-
-# After it has ran successfully, you should notice a new file in the output/ directory called "Ansible_key.pub", then run this on your cli:
-export BASTION_PUBLIC_KEY=$(cat output/Ansible_key.pub)
-# or
-BASTION_PUBLIC_KEY=$(cat output/Ansible_key.pub)  
-# If this process doesn't work with powershell, use gitbash to continue the process.
-# This would publish the public key for the remaining images to implement them when building.
-
-# Then you can build the remaining images (I normally would cut the bastion file into another dir, then uncomment the `locals{timestamp ...}` block in `nginx.pkr.hcl` and run the packer command (stated above) for building all images at once)
 
 # Build WordPress AMI
 packer build web.pkr.hcl -var-file=variables.pkrvar.hcl

@@ -22,6 +22,9 @@ build {
 
   provisioner "shell" {
     script = "web.sh"
+    environment_vars = [
+      "BASTION_PUBLIC_KEY=${var.bastion_public_key}"
+    ]
   }
 
 }

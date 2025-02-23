@@ -62,7 +62,7 @@ build {
   # Fetch the public key from the instance
   provisioner "file" {
   source      = "/home/ec2-user/.ssh/Ansible_key.pub"
-  destination = "output/Ansible_key.pub"
+  destination = "../output/Ansible_key.pub"
   direction   = "download"
 }
   

@@ -28,5 +28,8 @@ build {
   # Provision the instance
   provisioner "shell" {
     script = "nginx.sh" # Path to the shell script for installing and configuring Nginx
+    environment_vars = [
+      "BASTION_PUBLIC_KEY=${var.bastion_public_key}"
+    ]
   }
 }

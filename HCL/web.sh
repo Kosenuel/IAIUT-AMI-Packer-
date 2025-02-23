@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Create .ssh directory and set permissions (if it is not already created)
-mkdir -p /home/ec2-user/.ssh
-chmod 700 /home/ec2-user/.ssh
-
-# Append the passed public key to the authorized_keys
-echo "$BASTION_PUBLIC_KEY" >> /home/ec2-user/.ssh/authorized_keys
-chmod 600 /home/ec2-user/.ssh/authorized_keys
-chown ec2-user:ec2-user /home/ec2-user/.ssh/authorized_keys
-
 # Installing necessary packages
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 sudo yum install -y dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
@@ -50,3 +41,13 @@ sudo openssl req -newkey rsa:2048 -nodes -keyout /etc/pki/tls/private/ACS.key -x
 sudo sed -i 's/localhost.crt/ACS.crt/g'  /etc/httpd/conf.d/ssl.conf
 
 sudo sed -i 's/localhost.key/ACS.key/g'  /etc/httpd/conf.d/ssl.conf
+
+# Create .ssh directory and set permissions (if it is not already created)
+mkdir -p /home/ec2-user/.ssh
+chmod 700 /home/ec2-user/.ssh
+
+# Append the passed public key to the authorized_keys
+echo "$BASTION_PUBLIC_KEY" >> /home/ec2-user/.ssh/authorized_keys
+chmod 600 /home/ec2-user/.ssh/authorized_keys
+chown ec2-user:ec2-user /home/ec2-user/.ssh/authorized_keys
+echo "Bastion public key added to authorized_keys, the key is: $BASTION_PUBLIC_KEY"

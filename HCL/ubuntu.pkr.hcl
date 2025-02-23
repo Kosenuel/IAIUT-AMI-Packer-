@@ -23,6 +23,9 @@ build {
 
   provisioner "shell" {
     script = "ubuntu.sh"
+    environment_vars = [
+      "BASTION_PUBLIC_KEY=${var.bastion_public_key}"
+    ]
   }
 
 }
