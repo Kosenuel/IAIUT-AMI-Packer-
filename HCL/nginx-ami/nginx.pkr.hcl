@@ -1,5 +1,14 @@
 # Packer HCL Configuration
 # Create a local variable to generate a timestamp for unique AMI naming
+packer {
+  required_plugins {
+    amazon = {
+      version = ">= 1.0.0"
+      source  = "github.com/hashicorp/amazon"
+    }
+  }
+}
+
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "") # Remove special characters from the timestamp
 }

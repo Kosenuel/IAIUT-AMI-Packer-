@@ -5,7 +5,7 @@
 
 source "amazon-ebs" "terraform-web-prj-19" {
   ami_name      = "terraform-web-prj-19-${local.timestamp}"
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   region        = var.region
   source_ami    = var.source_ami
   ssh_username  = "ec2-user"
